@@ -88,8 +88,17 @@ class gameStart extends Phaser.Scene{
     update() {}
 }
 
+//map function-------------------------------------------------------------------------
+function createMap(scene) {
+
+    // map generation code goes here
+}// call this function in create()
+
+//Level 1 Scene--------------------------------------------------------------------
 class level1 extends Phaser.Scene{
-    preload() {}
+    preload() {
+        this.tile = this.load.image('ground', 'assets/MapSymbols/Square1x1-Lowres.png')
+    }
     create() {
 
     }
@@ -109,7 +118,7 @@ let config = {
             debug: false
         }
     },
-    scene: [StudioIntro, Library, Presentation, Chairs, Start],
+    scene: [StudioIntro, gameStart, level1],
 }
 
 
