@@ -90,7 +90,9 @@ class gameStart extends Phaser.Scene{
 
 class level1 extends Phaser.Scene{
     preload() {}
-    create() {}
+    create() {
+
+    }
     update() {}
 }
 
@@ -101,6 +103,12 @@ let config = {
     width: 800,
     height: 600,
     backgroundColor:0x141613,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: false
+        }
+    },
     scene: [StudioIntro, Library, Presentation, Chairs, Start],
 }
 
