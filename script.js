@@ -1,0 +1,14 @@
+
+
+//configuration stuff below ---------------------------------------------------------------------------
+let config = {
+    type: Phaser.WEBGL,
+    parent: "root",
+    width: 800,
+    height: 600,
+    backgroundColor:0x141613,
+    scene: [StudioIntro, Library, Presentation, Chairs, Start],
+}
+
+
+let game = new Phaser.Game(config);
