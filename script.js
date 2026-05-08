@@ -52,7 +52,7 @@ class StudioIntro extends Phaser.Scene {
                 ease: 'Linear',
 
                 onComplete: () => {
-                    this.scene.start('gameStart');
+                    this.scene.start('gamestart');
                 }
             });
         })
@@ -63,18 +63,26 @@ class StudioIntro extends Phaser.Scene {
 
 //Game Start Scene ------------------------------------------------------------------------------------
 class gameStart extends Phaser.Scene{
-    preload() {}
+    constructor() {
+        super('gamestart');
+    }
+    preload() {
+        this.cheese = this.load.image('cheese', 'assets/Pixel_Mart/white_cheese_piece.png')
+    }
+
     create() {
         this.textObjectTitle = this.add.text(
-            250,     // x
-            0,    // y
-            "Cheese  Cake",
+            70,     // x
+            50,    // y
+            "Cheese Cake",
             { font: "100px Arial", color: "#f9f7f5" }
         );
 
+        this.icon = this.add.image(250, 300, 'cheese').setScale(3);
+
         this.input.on('pointerup', () => {
             this.tweens.add({
-                targets: [this.textObjectTitle],
+                targets: [this.textObjectTitle, this.icon],
                 alpha: 0,            // fade to fully transparent
                 duration: 1000,      // over 1 second
                 ease: 'Linear',
@@ -95,12 +103,19 @@ function createMap(scene) {
 }// call this function in create()
 
 //Level 1 Scene--------------------------------------------------------------------
-class level1 extends Phaser.Scene{
+class Level1 extends Phaser.Scene{
+    constructor() {
+        super('level1');
+    }
+
     preload() {
-        this.tile = this.load.image('ground', 'assets/MapSymbols/Square1x1-Lowres.png')
+        this.tile = this.load.image('tile', 'assets/MapSymbols/Square1x1-Lowres.png')
+        this.mouse = this.load.image('mouse', 'assets/SmallAnimals/Mouse.png')
     }
     create() {
-
+          this.add.image(250, 300, 'tile').setScale(0.5);
+          this.add.image(300, 400, 'mouse');
+          
     }
     update() {}
 }
@@ -118,7 +133,7 @@ let config = {
             debug: false
         }
     },
-    scene: [StudioIntro, gameStart, level1],
+    scene: [StudioIntro, gameStart, Level1],
 }
 
 
