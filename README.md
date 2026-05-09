@@ -21,4 +21,5 @@ Assets credits:
     Map assets created by Mark Gosbell. Can be found [here](https://markgosbell.itch.io/old-school-blue-dungeon-      map-symbols)
     Small Animal Assets created by Gamebow Games. Can be found [here] (https://gamebowgames.itch.io/16x16-small-      animals-for-use-with-gbstudio)
     Pixel Mart Assets created by ghostpixxells. Can be found [here] (https://ghostpixxells.itch.io/pixel-mart)
+    
 
