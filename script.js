@@ -110,12 +110,22 @@ class Level1 extends Phaser.Scene{
 
     preload() {
         this.tile = this.load.image('tile', 'assets/MapSymbols/Square1x1-Lowres.png')
-        this.mouse = this.load.image('mouse', 'assets/SmallAnimals/Mouse.png')
+        this.load.spritesheet('mouse', 'assets/SmallAnimals/Mouse.png', {frameWidth: 16, frameHeight: 16})
+
+        tilePositions = [
+            { x: firstX, y: firstY },
+            { x: secondX, y: secondY },
+            {}
+        ]
     }
     create() {
-          this.add.image(250, 300, 'tile').setScale(0.5);
-          this.add.image(300, 400, 'mouse');
-          
+        //build environment
+        this.platforms = this.physics.add.staticGroup();
+        this.platforms.create(250, 300, 'tile').setScale(0.5).refreshBody();
+
+        //player info below
+        this.mouse = this.physics.add.sprite(50, 500, 'mouse').setFlipX(true).setScale(3).setCollideWorldBounds(true, 0, 0);
+
     }
     update() {}
 }
@@ -130,7 +140,8 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: false,
+            gravity: {y: 200}
         }
     },
     scene: [StudioIntro, gameStart, Level1],
