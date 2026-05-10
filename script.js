@@ -158,8 +158,26 @@ class Level1 extends Phaser.Scene{
                 }
             }
         )
-        
+
+        this.physics.add.overlap(
+            this.cheese,
+            this.bowl,
+            () => {
+                console.log('overlap detected')
+                this.textObjectKama = this.add.text(
+                    250,     // x
+                    0,    // y
+                    "You Win!",
+                    { font: "75px Arial", color: "#f9f7f5" }
+                );
+                this.time.delayedCall(
+                    2000,
+                    () => {  this.scene.start('level2');}
+                );
+            }
+        )    
     }
+
     update() {
         //player movement
         const { left, right, up } = this.cursors;
@@ -198,6 +216,15 @@ class Level1 extends Phaser.Scene{
     }
 }
 
+class Level2 extends Phaser.Scene{
+     constructor() {
+        super('level2');
+    }
+
+    preload(){}
+    create(){}
+    update(){}
+}
 //configuration stuff below ---------------------------------------------------------------------------
 let config = {
     type: Phaser.WEBGL,
@@ -212,7 +239,7 @@ let config = {
             gravity: {y: 200}
         }
     },
-    scene: [StudioIntro, gameStart, Level1],
+    scene: [StudioIntro, gameStart, Level1, Level2]
 }
 
 
