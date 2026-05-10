@@ -342,6 +342,7 @@ class Level3 extends Phaser.Scene{
         this.button = this.load.image('button', 'assets/MapSymbols/DoorFalse1x1-Lowres.png')
         this.fan = this.load.image('fan', 'assets/MapSymbols/PitClosedCircle1x1-Lowres.png')
         this.load.image('cheese', 'assets/Pixel_Mart/white_cheese_piece.png')
+        this.platform2 = this.load.image('platform2', 'assets/MapSymbols/Bench1x1-Lowres.png')
     }
     create(){
           //build environment
@@ -354,10 +355,12 @@ class Level3 extends Phaser.Scene{
         //adding stuff
         this.mouse = this.physics.add.sprite(50, 500, 'mouse').setFlipX(true).setScale(3).setCollideWorldBounds(true, 0, 0);
         this.bowl = this.physics.add.staticImage(700, 550, 'bowl').setScale(3)
-        this.fan = this.physics.add.image(690, 400, 'fan').setAngularDrag(0).setAngularVelocity(360)
+        this.fan = this.physics.add.image(690, 370, 'fan').setAngularDrag(0).setAngularVelocity(360)
         this.fan.body.setAllowGravity(false)
         this.button = this.physics.add.staticImage(300, 600, 'button').setScale(0.4)
-        this.cheese = this.physics.add.image(685, 250, 'cheese')
+        this.cheese = this.physics.add.image(685, 220, 'cheese')
+        this.platform2 = this.physics.add.image(685, 430, 'platform2')
+        this.platform2.body.setAllowGravity(false)
         this.pushBlock = this.physics.add.image(230, 350, 'block').setScale(0.5).setCollideWorldBounds(true)
         this.pushBlock.body.setDrag(300, 0);
 
@@ -436,6 +439,7 @@ class Level3 extends Phaser.Scene{
         }else{
             this.fan.body.setAngularDrag(360);
             this.cheese.body.setAllowGravity(true);
+            this.physics.add.collider(this.platform2, this.cheese);
             //set cheese y velocity to 0
         }
     }
