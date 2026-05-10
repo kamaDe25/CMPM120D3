@@ -116,9 +116,10 @@ class Level1 extends Phaser.Scene{
         this.tile = this.load.image('tile', 'assets/MapSymbols/Square1x1-Lowres.png')
         this.bowl = this.load.image('bowl', 'assets/Pixel_Mart/bowl.png')
         this.load.spritesheet('mouse', 'assets/SmallAnimals/Mouse.png', {frameWidth: 16, frameHeight: 16})
-        this.slope = this.load.image('slope', 'assets/MapSymbols/TriangleArrowhead1x1-Lowres.png')
+        //this.slope = this.load.image('slope', 'assets/MapSymbols/TriangleArrowhead1x1-Lowres.png')
         this.button = this.load.image('button', 'assets/MapSymbols/DoorFalse1x1-Lowres.png')
-        this.cheese = this.load.image('cheese', 'assets/Pixel_Mart/white_cheese_piece.png')
+        this.fan = this.load.image('fan', 'assets/MapSymbols/PitClosedCircle1x1-Lowres.png')
+        this.load.image('cheese', 'assets/Pixel_Mart/white_cheese_piece.png')
 
     }
     create() {
@@ -132,20 +133,26 @@ class Level1 extends Phaser.Scene{
         //adding stuff
         this.mouse = this.physics.add.sprite(50, 500, 'mouse').setFlipX(true).setScale(3).setCollideWorldBounds(true, 0, 0);
         this.bowl = this.physics.add.staticImage(700, 550, 'bowl').setScale(3)
-        this.slope = this.physics.add.staticImage(600, 300, 'slope')
+        this.fan = this.physics.add.image(690, 400, 'fan').setAngularDrag(0).setAngularVelocity(360).setAllowGravity(false);
+        //this.slope = this.physics.add.staticImage(600, 300, 'slope')
         this.button = this.physics.add.staticImage(230, 490, 'button').setScale(0.4)
-        this.cheese = this.physics.add.image(600, 270, 'cheese')
+        this.cheese = this.physics.add.image(680, 250, 'cheese')
 
         //make sure stuff is solid
         this.physics.add.collider(this.mouse, this.platforms);
-        this.physics.add.collider(this.mouse, this.slope)
-        this.physics.add.collider(this.cheese, this.slope)
+        this.physics.add.collider(this.cheese, this.bowl)
+        //this.physics.add.collider(this.mouse, this.slope)
+        //this.physics.add.collider(this.cheese, this.slope)
+
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        this.fanOn = true
         
     }
     update() {
+        this.fan.setAngularAcceleration(0).setAngularDrag(0);
+
         //player movement
         const { left, right, up } = this.cursors;
 
@@ -169,6 +176,13 @@ class Level1 extends Phaser.Scene{
         }
         if (up.isDown && this.mouse.body.blocked.down){
             this.mouse.setVelocityY(-250);
+        }
+
+        if(fanOn == true){
+            //rotate fan
+            //set cheese y velocity to negative 
+        }else{
+            //set cheese y velocity to 0
         }
     }
 }
