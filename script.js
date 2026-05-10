@@ -117,7 +117,9 @@ class Level1 extends Phaser.Scene{
         this.bowl = this.load.image('bowl', 'assets/Pixel_Mart/bowl.png')
         this.load.spritesheet('mouse', 'assets/SmallAnimals/Mouse.png', {frameWidth: 16, frameHeight: 16})
         this.slope = this.load.image('slope', 'assets/MapSymbols/TriangleArrowhead1x1-Lowres.png')
-        this.button = this.load.image('button', 'asset/MapSymbols/DoorFalse1x1-Lowres.png')
+        this.button = this.load.image('button', 'assets/MapSymbols/DoorFalse1x1-Lowres.png')
+        this.cheese = this.load.image('cheese', 'assets/Pixel_Mart/white_cheese_piece.png')
+
     }
     create() {
         //build environment
@@ -130,11 +132,14 @@ class Level1 extends Phaser.Scene{
         //adding stuff
         this.mouse = this.physics.add.sprite(50, 500, 'mouse').setFlipX(true).setScale(3).setCollideWorldBounds(true, 0, 0);
         this.bowl = this.physics.add.staticImage(700, 550, 'bowl').setScale(3)
-        this.slop = this.physics.add.staticImage(600, 300, 'slope')
-        this.button = this.physics.add.staticImage(100, 400, 'button')
+        this.slope = this.physics.add.staticImage(600, 300, 'slope')
+        this.button = this.physics.add.staticImage(230, 490, 'button').setScale(0.4)
+        this.cheese = this.physics.add.image(600, 270, 'cheese')
 
-        //make sure platforms are solid for mouse
+        //make sure stuff is solid
         this.physics.add.collider(this.mouse, this.platforms);
+        this.physics.add.collider(this.mouse, this.slope)
+        this.physics.add.collider(this.cheese, this.slope)
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
