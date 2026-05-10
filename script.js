@@ -133,26 +133,34 @@ class Level1 extends Phaser.Scene{
         //adding stuff
         this.mouse = this.physics.add.sprite(50, 500, 'mouse').setFlipX(true).setScale(3).setCollideWorldBounds(true, 0, 0);
         this.bowl = this.physics.add.staticImage(700, 550, 'bowl').setScale(3)
-        this.fan = this.physics.add.image(690, 400, 'fan').setAngularDrag(0).setAngularVelocity(360).setAllowGravity(false);
-        //this.slope = this.physics.add.staticImage(600, 300, 'slope')
+        this.fan = this.physics.add.image(690, 400, 'fan').setAngularDrag(0).setAngularVelocity(360)
+        this.fan.body.setAllowGravity(false)
         this.button = this.physics.add.staticImage(230, 490, 'button').setScale(0.4)
         this.cheese = this.physics.add.image(680, 250, 'cheese')
 
         //make sure stuff is solid
         this.physics.add.collider(this.mouse, this.platforms);
-        this.physics.add.collider(this.cheese, this.bowl)
-        //this.physics.add.collider(this.mouse, this.slope)
-        //this.physics.add.collider(this.cheese, this.slope)
-
+        this.physics.add.collider(this.cheese, this.bowl);
+        this.physics.add.overlap(this.mouse, this.button);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.fanOn = true
+        this.fanOn = true;
+        //this.mouse.body.onCollide = true
+        this.physics.add.overlap(
+            this.mouse,
+            this.button,
+            () => {
+                if(this.fanOn == true){
+                    this.fanOn = false
+                }else{
+                    this.fanOn = true
+                }
+            }
+        )
         
     }
     update() {
-        this.fan.setAngularAcceleration(0).setAngularDrag(0);
-
         //player movement
         const { left, right, up } = this.cursors;
 
@@ -178,10 +186,13 @@ class Level1 extends Phaser.Scene{
             this.mouse.setVelocityY(-250);
         }
 
-        if(fanOn == true){
+        if(this.fanOn == true){
+            this.fan.setAngularAcceleration(0).setAngularDrag(0);
             //rotate fan
-            //set cheese y velocity to negative 
+            //set cheese y velocity to negative so it looks like its being held up by cheese
+            this.cheese.body.setAllowGravity(false);
         }else{
+            this.cheese.body.setAllowGravity(true);
             //set cheese y velocity to 0
         }
     }
