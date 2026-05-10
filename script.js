@@ -1,3 +1,7 @@
+ tilePositions = [
+            {x: 192.5, y: 507.5},
+            {x: 227.5, y: 507.5}
+]
 //Intro Scene---------------------------------------------------------
 class StudioIntro extends Phaser.Scene {
     constructor() {
@@ -110,24 +114,58 @@ class Level1 extends Phaser.Scene{
 
     preload() {
         this.tile = this.load.image('tile', 'assets/MapSymbols/Square1x1-Lowres.png')
+        this.bowl = this.load.image('bowl', 'assets/Pixel_Mart/bowl.png')
         this.load.spritesheet('mouse', 'assets/SmallAnimals/Mouse.png', {frameWidth: 16, frameHeight: 16})
-
-        tilePositions = [
-            { x: firstX, y: firstY },
-            { x: secondX, y: secondY },
-            {}
-        ]
+        this.slope = this.load.image('slope', 'assets/MapSymbols/TriangleArrowhead1x1-Lowres.png')
+        this.button = this.load.image('button', 'asset/MapSymbols/DoorFalse1x1-Lowres.png')
     }
     create() {
         //build environment
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(250, 300, 'tile').setScale(0.5).refreshBody();
+        let i = 0;
+        for(i = 0; i < tilePositions.length; i++){
+            this.platforms.create(tilePositions[i].x, tilePositions[i].y, 'tile').setScale(0.5).refreshBody();
+        }
 
-        //player info below
+        //adding stuff
         this.mouse = this.physics.add.sprite(50, 500, 'mouse').setFlipX(true).setScale(3).setCollideWorldBounds(true, 0, 0);
+        this.bowl = this.physics.add.staticImage(700, 550, 'bowl').setScale(3)
+        this.slop = this.physics.add.staticImage(600, 300, 'slope')
+        this.button = this.physics.add.staticImage(100, 400, 'button')
 
+        //make sure platforms are solid for mouse
+        this.physics.add.collider(this.mouse, this.platforms);
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        
     }
-    update() {}
+    update() {
+        //player movement
+        const { left, right, up } = this.cursors;
+
+        if (left.isDown)
+        {
+            this.mouse.setVelocityX(-160);
+
+            //this.mouse.anims.play('left', true);
+        }
+        else if (right.isDown)
+        {
+            this.mouse.setVelocityX(160);
+
+            //this.mouse.anims.play('right', true);
+        }
+        else
+        {
+            this.mouse.setVelocityX(0);
+
+            //this.mouse.anims.play('turn');
+        }
+        if (up.isDown && this.mouse.body.blocked.down){
+            this.mouse.setVelocityY(-250);
+        }
+    }
 }
 
 //configuration stuff below ---------------------------------------------------------------------------
