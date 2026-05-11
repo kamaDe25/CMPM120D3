@@ -78,11 +78,11 @@ class gameStart extends Phaser.Scene{
         this.textObjectTitle = this.add.text(
             70,     // x
             50,    // y
-            "Cheese Cake",
+            "Cheese Catch",
             { font: "100px Arial", color: "#f9f7f5" }
         );
 
-        this.icon = this.add.image(250, 300, 'cheese').setScale(3);
+        this.icon = this.add.image(400, 500, 'cheese').setScale(3);
 
         this.input.on('pointerup', () => {
             this.tweens.add({
@@ -174,7 +174,7 @@ class Level1 extends Phaser.Scene{
                 );
                 this.time.delayedCall(
                     2000,
-                    () => {  this.scene.start('level2');}
+                    () => {  this.scene.start('level1transition');}
                 );
             }
         )    
@@ -217,6 +217,37 @@ class Level1 extends Phaser.Scene{
             //set cheese y velocity to 0
         }
     }
+}
+
+class Level1Transition extends Phaser.Scene{
+    constructor(){
+        super('level1transition');
+    }
+    preload(){}
+    create(){
+        this.textObjectTitle = this.add.text(
+            70,     // x
+            50,    // y
+            "Are you ready for more in level 2?",
+            { font: "50px Arial", color: "#f9f7f5", wordWrap: {width: 700} },
+
+        );
+
+        this.input.on('pointerup', () => {
+            this.tweens.add({
+                targets: [this.textObjectTitle],
+                alpha: 0,            // fade to fully transparent
+                duration: 1000,      // over 1 second
+                ease: 'Linear',
+
+                onComplete: () => {
+                    this.scene.start('level2');
+                }
+            });
+        })
+
+    }
+    update(){}
 }
 
 class Level2 extends Phaser.Scene{
@@ -287,7 +318,7 @@ class Level2 extends Phaser.Scene{
                 );
                 this.time.delayedCall(
                     2000,
-                    () => {  this.scene.start('level3');}
+                    () => {  this.scene.start('level2transition');}
                 );
             }
         )    
@@ -329,6 +360,36 @@ class Level2 extends Phaser.Scene{
             //set cheese y velocity to 0
         }
     }
+}
+
+class Level2Transition extends Phaser.Scene{
+    constructor(){
+        super('level2transition');
+    }
+    preload(){}
+    create(){
+        this.textObjectTitle = this.add.text(
+            70,     // x
+            50,    // y
+            "Are you ready for more in level 3?",
+            { font: "50px Arial", color: "#f9f7f5", wordWrap: {width: 700} },
+
+        );
+
+        this.input.on('pointerup', () => {
+            this.tweens.add({
+                targets: [this.textObjectTitle],
+                alpha: 0,            // fade to fully transparent
+                duration: 1000,      // over 1 second
+                ease: 'Linear',
+
+                onComplete: () => {
+                    this.scene.start('level3');
+                }
+            });
+        })
+    }
+    update(){}
 }
 
 class Level3 extends Phaser.Scene{
@@ -405,7 +466,7 @@ class Level3 extends Phaser.Scene{
                 );
                 this.time.delayedCall(
                     2000,
-                    () => {  this.scene.start('level3');}
+                    () => {  this.scene.start('complete');}
                 );
             }
         )
@@ -463,6 +524,7 @@ class Level3 extends Phaser.Scene{
             }else{
                 this.cheese.body.setAllowGravity(true);
                 this.cheese.setVelocityY(200);
+                //this.cheeseLandedPlatform = false;
             }
             
         }else{
@@ -482,6 +544,24 @@ class Level3 extends Phaser.Scene{
 
 }
 
+class Complete extends Phaser.Scene{
+    constructor() {
+        super('complete');
+    }
+    preload(){}
+    create(){
+        this.textObjectTitle = this.add.text(
+            70,     // x
+            50,    // y
+            "Congratuation! You caught the cheese!",
+            { font: "50px Arial", color: "#f9f7f5", wordWrap: {width: 700} },
+
+        );
+    }
+    update(){}
+
+}
+
 
 //configuration stuff below ---------------------------------------------------------------------------
 let config = {
@@ -493,11 +573,12 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
-            gravity: {y: 200}
+            debug: false,
+            gravity: {y: 200},
+            fixedStep: true
         }
     },
-    scene: [StudioIntro, gameStart, Level1, Level2, Level3]
+    scene: [StudioIntro, gameStart, Level1, Level2, Level3, Complete, Level1Transition, Level2Transition]
 }
 
 
