@@ -359,31 +359,36 @@ class Level3 extends Phaser.Scene{
         this.fan.body.setAllowGravity(false)
         this.button = this.physics.add.staticImage(300, 600, 'button').setScale(0.4)
         this.cheese = this.physics.add.image(685, 220, 'cheese')
-        this.platform2 = this.physics.add.image(685, 430, 'platform2')
+        
+        this.platform2 = this.physics.add.image(685, 450, 'platform2').setImmovable(true)
         this.platform2.body.setAllowGravity(false)
+        this.platform2.body.setSize(70, 20)
+        this.platform2.setVisible(false)
+
         this.pushBlock = this.physics.add.image(230, 350, 'block').setScale(0.5).setCollideWorldBounds(true)
         this.pushBlock.body.setDrag(300, 0);
 
         //make sure stuff is solid
         this.physics.add.collider(this.mouse, this.platforms);
-        //this.physics.add.overlap(this.mouse, this.button);
         this.physics.add.collider(this.mouse, this.bowl);
         this.physics.add.collider(this.mouse, this.pushBlock);
         this.physics.add.collider(this.pushBlock, this.platforms)
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        this.blockOnButton = false;
         this.fanOn = true;
-        //this.mouse.body.onCollide = true
+
         this.physics.add.overlap(
             this.button,
             this.pushBlock,
             () => {
-                if(this.fanOn == true){
+                this.blockOnButton = true;
+                /*if(this.fanOn == true){
                     this.fanOn = false
                 }else{
                     this.fanOn = true
-                }
+                }*/
             }
         )
 
@@ -403,9 +408,25 @@ class Level3 extends Phaser.Scene{
                     () => {  this.scene.start('level3');}
                 );
             }
-        )    
+        )
+        
+        this.platformCollider = this.physics.add.collider(
+            this.platform2, 
+            this.cheese,
+            () => this.cheeseLandedPlatform = true
+        );
+        this.platformCollider.active = false;
+
+        this.cheeseLandedPlatform = false;
     }
     update(){
+        
+        if (this.blockOnButton == true){
+            this.fanOn = false
+        }else{
+            this.fanOn = true
+        }
+
           //player movement
         const { left, right, up } = this.cursors;
 
@@ -432,19 +453,36 @@ class Level3 extends Phaser.Scene{
         }
 
         if(this.fanOn == true){
-            this.fan.setAngularAcceleration(0).setAngularDrag(0);
+            this.fan.body.setAngularDrag(0);
             //rotate fan
             //set cheese y velocity to negative so it looks like its being held up by cheese
-            this.cheese.body.setAllowGravity(false);
+            this.platform2.setVisible(false) 
+            this.platformCollider.active = false;
+            if(this.cheeseLandedPlatform == false){
+                this.cheese.body.setAllowGravity(false);
+            }else{
+                this.cheese.body.setAllowGravity(true);
+                this.cheese.setVelocityY(200);
+            }
+            
         }else{
             this.fan.body.setAngularDrag(360);
             this.cheese.body.setAllowGravity(true);
-            this.physics.add.collider(this.platform2, this.cheese);
+            //this.platformCollider = true;
+            this.platformCollider.active = true;
+            this.platform2.setVisible(true) 
+            //this.platformCollider.active = true;
+            //this.physics.add.collider(this.platform2, this.cheese);
             //set cheese y velocity to 0
         }
+
+        //fanOn/Off
+        this.blockOnButton = false
     }
 
 }
+
+
 //configuration stuff below ---------------------------------------------------------------------------
 let config = {
     type: Phaser.WEBGL,
